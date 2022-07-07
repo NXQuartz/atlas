@@ -2,7 +2,7 @@ import { PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 } from 'uuid';
 
 export abstract class BaseEntity {
-  @PrimaryKey()
+  @PrimaryKey({ length: 36 })
   uuid: string = v4();
 
   @Property()

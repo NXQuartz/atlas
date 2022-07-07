@@ -8,11 +8,12 @@
       "columns": {
         "uuid": {
           "name": "uuid",
-          "type": "varchar(255)",
+          "type": "varchar(36)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 36,
           "mappedType": "string"
         },
         "created_at": {
