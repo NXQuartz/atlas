@@ -56,8 +56,8 @@
           "length": 254,
           "mappedType": "string"
         },
-        "password_hash": {
-          "name": "password_hash",
+        "password": {
+          "name": "password",
           "type": "varchar(128)",
           "unsigned": false,
           "autoincrement": false,

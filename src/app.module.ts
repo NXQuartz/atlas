@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import configuration from './configuration';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,8 +22,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
       }),
     }),
     AuthModule,
+    UserModule,
   ],
-  controllers: [],
-  providers: [AppService],
 })
 export class AppModule {}
