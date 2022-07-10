@@ -1,14 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from 'src/entities/user';
-import { CreateUserDto } from './dto';
-import { UserRO } from './user.interface';
+import { ValidationException } from 'src/exceptions';
+import { CreateUser, UserData } from './dto';
 
 @Injectable()
 export class UserService {
@@ -17,7 +12,7 @@ export class UserService {
     private readonly userRepository: EntityRepository<User>,
   ) {}
 
-  async create(dto: CreateUserDto): Promise<UserRO> {
+  async create(dto: CreateUser): Promise<UserData> {
     const { username, email, password } = dto;
 
     // Check if username exists
@@ -31,14 +26,9 @@ export class UserService {
     });
 
     if (usernameFound || emailFound) {
-      const errors = {
-        ...(usernameFound && { username: 'Username is in use.' }),
-        ...(emailFound && { email: 'Email is in use.' }),
-      };
-
-      throw new BadRequestException({
-        message: 'Input data validation failed.',
-        errors,
+      throw new ValidationException({
+        ...(usernameFound && { username: ['username is in use.'] }),
+        ...(emailFound && { email: ['email is in use.'] }),
       });
     }
 
@@ -49,25 +39,6 @@ export class UserService {
     });
 
     await this.userRepository.persistAndFlush(user);
-    return this.buildUserRO(user);
-  }
-
-  /**
-   * Build a public user response object
-   *
-   * @param user to build an object for
-   * @param publicView is this being viewed publicly?
-   * @returns user response object
-   */
-  private buildUserRO(user: User, publicView = false) {
-    const userRO = {
-      id: user.uuid,
-      username: user.username,
-      ...(!publicView && {
-        email: user.email,
-      }),
-    };
-
-    return { user: userRO };
+    return new UserData(user);
   }
 }

@@ -6,8 +6,8 @@
   "tables": [
     {
       "columns": {
-        "uuid": {
-          "name": "uuid",
+        "id": {
+          "name": "id",
           "type": "varchar(36)",
           "unsigned": false,
           "autoincrement": false,
@@ -101,7 +101,7 @@
         {
           "keyName": "user_pkey",
           "columnNames": [
-            "uuid"
+            "id"
           ],
           "composite": false,
           "primary": true,
